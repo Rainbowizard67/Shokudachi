@@ -32,7 +32,6 @@ func StartMainListener(port serial.Port) error {
 	buffer := make([]byte, 100) //Change to match max struct settings
 
 	var mu sync.Mutex
-	var wg sync.WaitGroup
 
 	for {
 		n, err := port.Read(buffer)
@@ -44,7 +43,11 @@ func StartMainListener(port serial.Port) error {
 			break
 		}
 
-		go
+		go func() {
+			mu.Lock()
+			defer mu.Unlock()
+		}()
+
 	}
 
 	return nil
