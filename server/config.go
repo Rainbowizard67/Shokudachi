@@ -4,25 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"go.bug.st/serial"
 )
 
-type ProgramConfig struct {
-	Baud_Rate int `json:"baud_rate"`
-}
-
 type PlantConfig struct {
-	Nitrogen struct {
-	}
-	Phosphorus struct {
-	}
-	Potassium struct {
-	}
 	Moisture struct {
 	}
 }
 
-// Function to load the general program JSON configuration into the program struct
-func LoadProgramConfig(filename string) (*ProgramConfig, error) {
+// Function to load the general program JSON configuration into the serial mode struct
+func LoadProgramConfig(filename string) (*serial.Mode, error) {
 	file, err := os.Open(filename)
 
 	if err != nil {
@@ -30,7 +22,7 @@ func LoadProgramConfig(filename string) (*ProgramConfig, error) {
 	}
 	defer file.Close()
 
-	var cfg ProgramConfig
+	var cfg serial.Mode
 
 	decoder := json.NewDecoder(file)
 	if err := decoder.Decode(&cfg); err != nil {
@@ -57,4 +49,8 @@ func LoadPlantConfig(filename string) (*PlantConfig, error) {
 	}
 
 	return &cfg, nil
+}
+
+func CheckPlantThresholds() {
+
 }
